@@ -16,7 +16,7 @@ func main() {
 }
 
 func add(x, y int, wg *sync.WaitGroup, ch chan int) {
-	defer wg.Done()
 	result := x + y
 	ch <- result
+	wg.Done()
 }
