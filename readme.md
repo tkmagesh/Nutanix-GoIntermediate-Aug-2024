@@ -63,3 +63,30 @@
 - Functions as data
 - Functions can be passed as arguments
 - Functions can be returned as return values
+
+## Concurrency
+- Ability to have more than one execution path
+- Typically, concurrency is achieved using OS threads
+- OS Thread scheduler is responsible for scheduling the thread execution in the processor
+- Scheduling Strategies
+    - Cooperative Multi tasking
+    - Pre-emptive Multi tasking
+### OS Thread based concurrency
+- OS Threads are costly 
+    - ~2MB of RAM / thread
+    - context switch are costly
+    - creating & destroying threads are costly (mitigate by using "thread pools)
+
+## Go Concurrency
+- Goroutines
+    - A concurrent operation representation in Go
+    - Cheap (~4KB)
+- Builtin Scheduler
+    - As a part of the application binary
+
+![image](./images/go-concurrency.png)
+
+### WaitGroup
+- Synchronization Api
+- Semaphore based counter
+- Capable of blocking the exeuction of a function until the counter becomes 0
