@@ -90,3 +90,13 @@
 - Synchronization Api
 - Semaphore based counter
 - Capable of blocking the exeuction of a function until the counter becomes 0
+
+### Data Race
+#### Run with race detector
+```
+go run --race [program.go]
+```
+#### Build with race detector
+```
+go build --race [program.go]
+```
