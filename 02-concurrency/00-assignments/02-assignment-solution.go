@@ -14,7 +14,7 @@ func main() {
 	wg := &sync.WaitGroup{}
 	for i := 200; i <= 1000; i++ {
 		wg.Add(1)
-		printIfPrime(i, wg)
+		go printIfPrime(i, wg)
 	}
 	wg.Wait()
 	fmt.Println("Count :", count)
