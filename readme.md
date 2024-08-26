@@ -60,3 +60,6 @@
 - Use "recover()" to gain access to the error that resulted in the panic
 
 ### Higher Order Functions
+- Functions as data
+- Functions can be passed as arguments
+- Functions can be returned as return values
