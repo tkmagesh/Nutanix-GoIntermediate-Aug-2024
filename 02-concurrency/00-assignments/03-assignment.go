@@ -1,4 +1,4 @@
-// Print the total number of prime numbers found in the main() function
+// Print the prime numbers found in the main() function
 
 package main
 
