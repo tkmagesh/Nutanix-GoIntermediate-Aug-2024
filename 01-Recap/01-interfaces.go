@@ -15,7 +15,6 @@ func NewMessageGenerator() *MessageGenerator {
 }
 
 /* Contract */
-
 type IMessageGenerator interface {
 	GetMessage() string
 }
