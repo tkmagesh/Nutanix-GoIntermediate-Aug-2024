@@ -133,3 +133,23 @@ data := <- ch
 #### Channel Behavior
 ![image](./images/channel-behaviors.png)
 
+### Context
+- Cancel Propagation
+- context package
+- context factory functions
+    - context.Background()
+        - used to create a top-level context
+        - NON cancellable
+    - context.WithCancel()
+        - programmatically cancellable
+    - context.WithTimeout()
+        - programmatically cancellable
+        - auto cancellable by timeout
+        - based on relative time
+    - context.WithDeadline()
+        - programmatically cancellable
+        - auto cancellable by timeout
+        - based on absolute time
+    - context.WithValue()
+        - share data through context hierarchy
+        - NON cancellable
