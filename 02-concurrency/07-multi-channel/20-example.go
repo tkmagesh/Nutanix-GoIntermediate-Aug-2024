@@ -11,7 +11,7 @@ func main() {
 	ch3 := make(chan int)
 
 	go func() {
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 		ch1 <- 100
 	}()
 
@@ -33,7 +33,7 @@ func main() {
 
 	// order of consumption is NOT pre-determined
 	// select-case == switch case for channels
-	time.Sleep(2 * time.Second)
+	// time.Sleep(2 * time.Second)
 	for range 3 {
 		select {
 		case d1 := <-ch1:
@@ -42,8 +42,9 @@ func main() {
 			fmt.Println(d2)
 		case ch3 <- 300:
 			fmt.Println("[select-case] data sent to ch3")
-		default:
-			fmt.Println("no channel operations were successful")
+			/*
+				default:
+						fmt.Println("no channel operations were successful") */
 		}
 	}
 }

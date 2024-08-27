@@ -1,3 +1,6 @@
+/*
+Modify the program so that the genNos() keeps producing data until the user hits ENTER key
+*/
 package main
 
 import (
@@ -10,7 +13,6 @@ func main() {
 	for no := range ch {
 		fmt.Println(no)
 	}
-	fmt.Println("Done!")
 }
 
 func genNos() <-chan int {
