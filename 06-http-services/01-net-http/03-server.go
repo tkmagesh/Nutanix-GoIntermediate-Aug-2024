@@ -22,7 +22,8 @@ var products = []Product{
 
 // Library
 type AppServer struct {
-	routes map[string]func(http.ResponseWriter, *http.Request)
+	routes      map[string]func(http.ResponseWriter, *http.Request)
+	middlewares []func(func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request)
 }
 
 func NewAppServer() *AppServer {
@@ -41,7 +42,15 @@ func (appServer *AppServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (appServer *AppServer) Register(pattern string, handlerFn func(http.ResponseWriter, *http.Request)) {
+	for i := len(appServer.middlewares) - 1; i >= 0; i-- {
+		middleware := appServer.middlewares[i]
+		handlerFn = middleware(handlerFn)
+	}
 	appServer.routes[pattern] = handlerFn
+}
+
+func (appServer *AppServer) UseMiddleware(middleware func(func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request)) {
+	appServer.middlewares = append(appServer.middlewares, middleware)
 }
 
 // application specific implementation
@@ -93,8 +102,10 @@ func JSONMiddleware(next func(http.ResponseWriter, *http.Request)) func(http.Res
 func main() {
 
 	appServer := NewAppServer()
-	appServer.Register("/", JSONMiddleware(logMiddleware(IndexHandler)))
-	appServer.Register("/products", JSONMiddleware(logMiddleware(ProductsHandler)))
-	appServer.Register("/customers", JSONMiddleware(logMiddleware(CustomersHandler)))
+	appServer.UseMiddleware(JSONMiddleware)
+	appServer.UseMiddleware(logMiddleware)
+	appServer.Register("/", IndexHandler)
+	appServer.Register("/products", ProductsHandler)
+	appServer.Register("/customers", CustomersHandler)
 	http.ListenAndServe(":8080", appServer)
 }
