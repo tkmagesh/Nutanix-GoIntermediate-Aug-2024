@@ -9,23 +9,30 @@ import (
 )
 
 func main() {
-	ch := genNos()
+	stopCh := make(chan struct{})
+	ch := genNos(stopCh)
+	go func() {
+		fmt.Println("Hit ENTER to stop...!")
+		fmt.Scanln()
+		// stopCh <- struct{}{}
+		close(stopCh)
+	}()
 	for no := range ch {
 		fmt.Println(no)
 	}
+	fmt.Println("Done!")
 }
 
-func genNos() <-chan int {
+func genNos(stopCh chan struct{}) <-chan int {
 	ch := make(chan int)
-	timeoutCh := time.After(5 * time.Second)
 	go func() {
 	LOOP:
 		for i := 1; ; i++ {
 			select {
 			case ch <- i * 10:
 				time.Sleep(500 * time.Millisecond)
-			case <-timeoutCh:
-				fmt.Println("timeout occurred!")
+			case <-stopCh:
+				fmt.Println("stop signal received")
 				break LOOP
 			}
 		}
@@ -33,14 +40,3 @@ func genNos() <-chan int {
 	}()
 	return ch
 }
-
-/*
-func timeout(d time.Duration) <-chan time.Time {
-	timeOutCh := make(chan time.Time)
-	go func() {
-		time.Sleep(d)
-		timeOutCh <- time.Now()
-	}()
-	return timeOutCh
-}
-*/
